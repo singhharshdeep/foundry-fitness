@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, StatusBar, TouchableOpacity } from 'react-native';
-import { Container, Content, Card, CardItem, Text, Thumbnail, Body, Button, Header, Footer, FooterTab, Icon } from 'native-base';
+import { View, StyleSheet, StatusBar, Platform } from 'react-native';
+import { Container, Text, Button, Footer, FooterTab, Icon, StyleProvider, Header, Title } from 'native-base';
 import HomeTab from '../components/HomeTab';
 import ClassesTab from '../components/ClassesTab';
 import ProfileTab from '../components/ProfileTab';
 import NitroTab from '../components/NitroTab';
+import getTheme from '../native-base-theme/components';
+import commonColor from '../native-base-theme/variables/commonColor';
 
 class HomeScreen extends Component {
     state = {
         selectedTab: 0,
     }
-    static navigationOptions = { headerLeft: null, title: 'Home', gesturesEnabled: false }
+    static navigationOptions = { header: null }
 
     render() {
         let activeTab;
@@ -25,36 +27,41 @@ class HomeScreen extends Component {
                 activeTab = <NitroTab />
                 break;
             case 3:
-                activeTab = <ProfileTab />
+                activeTab = <ProfileTab navigation={this.props.navigation} />
                 break;
             default:
                 activeTab = <HomeTab />
         }
         return (
-            <Container style={styles.container}>
-                <StatusBar barStyle='dark-content' />
-                {activeTab}
-                <Footer>
-                    <FooterTab>
-                        <Button vertical onPress={() => this.setState({ selectedTab: 0 })} style={(this.state.selectedTab === 0) ? styles.selectedTab : {}}>
-                            <Icon type='FontAwesome' name='home' style={(this.state.selectedTab === 0) ? styles.selectedText : {}} />
-                            <Text style={(this.state.selectedTab === 0) ? styles.selectedText : {}}>Home</Text>
-                        </Button>
-                        <Button vertical onPress={() => this.setState({ selectedTab: 1 })} style={(this.state.selectedTab === 1) ? styles.selectedTab : {}}>
-                            <Icon type='FontAwesome' name='calendar' style={(this.state.selectedTab === 1) ? styles.selectedText : {}} />
-                            <Text style={(this.state.selectedTab === 1) ? styles.selectedText : {}}>Classes</Text>
-                        </Button>
-                        <Button vertical onPress={() => this.setState({ selectedTab: 2 })} style={(this.state.selectedTab === 2) ? styles.selectedTab : {}}>
-                            <Icon type='FontAwesome' name='info' style={(this.state.selectedTab === 2) ? styles.selectedText : {}} />
-                            <Text style={(this.state.selectedTab === 2) ? styles.selectedText : {}}>Nitro</Text>
-                        </Button>
-                        <Button vertical onPress={() => this.setState({ selectedTab: 3 })} style={(this.state.selectedTab === 3) ? styles.selectedTab : {}}>
-                            <Icon type='FontAwesome' name='user' style={(this.state.selectedTab === 3) ? styles.selectedText : {}} />
-                            <Text style={(this.state.selectedTab === 3) ? styles.selectedText : {}}>Profile</Text>
-                        </Button>
-                    </FooterTab>
-                </Footer>
-            </Container>
+            <StyleProvider style={getTheme(commonColor)}>
+                <Container style={styles.container}>
+                    <StatusBar />
+                    <Header style={{ justifyContent: 'center', alignItems: 'center' }} iosBarStyle='light-content'>
+                        <Title>Home</Title>
+                    </Header>
+                    {activeTab}
+                    <Footer>
+                        <FooterTab>
+                            <Button vertical onPress={() => this.setState({ selectedTab: 0 })} active={this.state.selectedTab === 0}>
+                                <Icon type='FontAwesome' name='home' />
+                                <Text>Home</Text>
+                            </Button>
+                            <Button vertical onPress={() => this.setState({ selectedTab: 1 })} active={this.state.selectedTab === 1}>
+                                <Icon type='FontAwesome' name='calendar' />
+                                <Text>Classes</Text>
+                            </Button>
+                            <Button vertical onPress={() => this.setState({ selectedTab: 2 })} active={this.state.selectedTab === 2}>
+                                <Icon type='FontAwesome' name='info' />
+                                <Text>Nitro</Text>
+                            </Button>
+                            <Button vertical onPress={() => this.setState({ selectedTab: 3 })} active={this.state.selectedTab === 3}>
+                                <Icon type='FontAwesome' name='user' />
+                                <Text>Profile</Text>
+                            </Button>
+                        </FooterTab>
+                    </Footer>
+                </Container>
+            </StyleProvider>
         );
     }
 }
