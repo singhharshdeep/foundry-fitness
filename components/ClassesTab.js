@@ -26,14 +26,14 @@ class ClassesTab extends Component {
                         <TouchableOpacity key={gymClass.id} onPress={() => this.props.navigation.navigate('Show', { classId: gymClass.id })}>
                             <Card>
                                 <CardItem header bordered>
-                                    <Thumbnail source={require('../assets/img/bootcamp.jpg')} />
+                                    <Thumbnail source={{ uri: gymClass.attributes.image_url }} />
                                     <Body style={{ marginStart: 10, marginTop: 5 }}>
                                         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{gymClass.attributes.name}</Text>
                                         <Text note>{gymClass.attributes.description}</Text>
                                     </Body>
                                 </CardItem>
                                 <CardItem cardBody>
-                                    <Image source={require('../assets/img/bootcamp-body.jpg')} style={{ height: 200, width: null, flex: 1 }} />
+                                    <Image source={{uri: gymClass.attributes.image_url}} style={{ height: 200, width: null, flex: 1 }} />
                                 </CardItem>
                                 <CardItem cardBody>
                                     <View style={{ flex: 1, width: undefined, margin: 0 }}>

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TextInput, AsyncStorage } from 'react-native';
+import { View, StyleSheet, Image, TextInput, AsyncStorage, NativeModules } from 'react-native';
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
 import { Container, Header, Text, Button, StyleProvider, Content } from 'native-base';
 import { getUserToken } from '../api';
-
 class LoginScreen extends Component {
     state = {
         emailEntered: '',
@@ -23,7 +22,7 @@ class LoginScreen extends Component {
                         </View>
                         <View style={{ flex: 1, marginHorizontal: 40 }}>
                             <Text style={{ color: '#928150', fontSize: 16 }}>EMAIL</Text>
-                            <TextInput onChangeText={(email) => this.setState({ email })}
+                            <TextInput autoCapitalize='none' keyboardType='email-address' onChangeText={(email) => this.setState({ email })}
                                 style={{ color: '#928150', height: 50, borderColor: '#928150', borderWidth: 1 }}
                             />
                             <View style={{ marginTop: 10 }}>
@@ -48,8 +47,11 @@ class LoginScreen extends Component {
         if (this.state.email === '' || this.state.password === '') {
             alert('Please fill your email and password');
         } else {
+
             getUserToken(this.state.email, this.state.password)
-            .then(response => AsyncStorage.setItem('userToken', response.data.jwt).then(() => this.props.navigation.navigate('App')))
+            .then(response => {
+                AsyncStorage.setItem('userToken', response.data.jwt).then(() => this.props.navigation.navigate('App'))
+            })
             .catch(error => {
                 alert("Invalid email/password");
             });

@@ -8,6 +8,7 @@ class ShowScreen extends Component {
     state = {
         token: '',
         classes: [],
+        selectedLocation: '',
         selectedDate: '',
         selectedTime: '',
         loading: false,
@@ -21,7 +22,7 @@ class ShowScreen extends Component {
         AsyncStorage.getItem('userToken').then(token => {
             this.setState({ token : token })
             showClass(token, id)
-                .then(response => this.setState({ classes: response.data.dates }));
+                .then(response => { this.setState({ classes: response.data.dates })});
         });
     }
 
@@ -58,18 +59,30 @@ class ShowScreen extends Component {
                 <View style={{ flex: 1 }}>
                     <Content style={{marginTop: 20}} padder>
                         <Form>
-                            <Item style={{ borderColor: '#928150'}} rounded>
-                                    <Picker mode='dropdown' style={{ color: '#928150'}} selectedValue={this.state.selectedDate} onValueChange={this.onDateChange.bind(this)}>                                  
-                                    
+                            <Item style={{ borderColor: '#928150' }} rounded>
+                                <Picker mode='dropdown' style={{ color: '#928150' }} selectedValue={this.state.selectedLocation} onValueChange={this.onLocationChange.bind(this)}>
+                                    <Picker.Item label='Location' value='' />
+                                    <Picker.Item label='Brampton' value='Brampton' />
+                                    <Picker.Item label='Mississauga' value='Mississauga' />
+                                </Picker>
+                            </Item>
+                            {
+
+                            this.state.selectedLocation !== '' &&
+                            (<View>
+                                <Item style={{ borderColor: '#928150', marginTop: 10}} rounded>
+                                    <Picker mode='dropdown' style={{ color: '#928150'}} selectedValue={this.state.selectedDate} onValueChange={this.onDateChange.bind(this)}>
                                         <Picker.Item label='Select Date' value='' />
                                         {datePicker}
                                     </Picker>
-                            </Item>
-                            <Item style={{ borderColor: '#928150', marginTop: 10 }} rounded>
-                                <Picker mode='dropdown' style={{ color: '#928150' }} selectedValue={this.state.selectedTime} onValueChange={this.onTimeChange.bind(this)}>
-                                    {this.state.selectedDate !== '' ? timePicker : <Picker.Item label='Select Time' value='' />}
-                                </Picker>
-                            </Item>
+                                </Item>
+                                <Item style={{ borderColor: '#928150', marginTop: 10 }} rounded>
+                                    <Picker mode='dropdown' style={{ color: '#928150' }} selectedValue={this.state.selectedTime} onValueChange={this.onTimeChange.bind(this)}>
+                                        {this.state.selectedDate !== '' ? timePicker : <Picker.Item label='Select Time' value='' />}
+                                    </Picker>
+                                </Item>
+                            </View>)
+                            }
                             <Button full style={{ marginTop: 20, backgroundColor: '#928150' }} onPress={() => this.handleClassSignUp()}>
                                 <Text style={{ fontWeight: 'bold' }}>Sign Up</Text>
                             </Button>
@@ -86,6 +99,10 @@ class ShowScreen extends Component {
 
     onTimeChange(value) {
         this.setState({ selectedTime: value });
+    }
+
+    onLocationChange(value) {
+        this.setState({ selectedLocation: value });
     }
 
     handleClassSignUp() {

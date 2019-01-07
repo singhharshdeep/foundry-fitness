@@ -28,7 +28,7 @@
   for (UIView *subview in [view subviews]) {
     if ([self findSubviewInView:subview matching:test]) {
       return YES;
-    }
+    }	
   }
   return NO;
 }

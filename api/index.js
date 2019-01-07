@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const url = 'http://www.nitrolifestyle.herokuapp.com/api/v1';
+// const url = 'http://nitrolifestyle.herokuapp.com/api/v1';
+const url = 'http://10.0.2.2:3000/api/v1';
 
 export const getUserToken = (email, password) => {
     return axios.post(url + '/user_token', {
