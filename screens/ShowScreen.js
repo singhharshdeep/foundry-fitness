@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import { View, Image, StatusBar, Alert, ImageBackground, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Text, Content, Form, Item, Input, Button, Picker, H1, H3, Icon } from 'native-base';
 import { NavigationActions, StackActions, NavigationAction } from "react-navigation";
-import { showClass, signUp } from '../api';
+import { showClass, signUp, getLocations, showDates, getGymClass } from '../api';
 
 class ShowScreen extends Component {
     state = {
         token: '',
         classes: [],
+        locations: [],
         selectedLocation: '',
         selectedDate: '',
         selectedTime: '',
+        name: '',
+        description: '',
+        imageUrl: '',
         loading: false,
     }
 
@@ -18,11 +22,16 @@ class ShowScreen extends Component {
 
     componentDidMount() {
         this.setState({ loading: true });
-        let id = this.props.navigation.state.params.classId;
         AsyncStorage.getItem('userToken').then(token => {
             this.setState({ token : token })
-            showClass(token, id)
-                .then(response => { this.setState({ classes: response.data.dates })});
+            let id = this.props.navigation.state.params.classId;
+            getGymClass(token, id)
+                .then(response => { 
+                    console.log(response);
+                    this.setState({ name: response.data.data.attributes.name, description: response.data.data.attributes.description, imageUrl: response.data.data.attributes.image_url })
+            })
+            getLocations(token)
+                .then(response => { this.setState({ locations: response.data })});
         });
     }
 
@@ -36,7 +45,7 @@ class ShowScreen extends Component {
         } else {
             datePicker = (<Picker.Item label='No schedule available' value='' />);
         }
-        if (this.state.selectedDate !== '') {
+        if (this.state.selectedDate !== '' && Object.keys(this.state.classes).length > 0) {
             timeObject = this.state.classes[this.state.selectedDate];
             timePicker = timeObject.map((time, index) => <Picker.Item key={index} label={time.time_range} value={time.schedule_id} />);
         }
@@ -44,15 +53,15 @@ class ShowScreen extends Component {
             <View style={{ flex: 1 }}>
                 <StatusBar barStyle='light-content' />
                 <View style={{ flex: 1 }}>
-                    <ImageBackground resizeMode='stretch' style={{opacity: 0.8}} source={require('../assets/img/bootcamp-body.jpg')} style={{ height: null, width: null, flex: 1 }}>
+                    <ImageBackground resizeMode='stretch' style={{opacity: 0.8}} source={{uri: this.state.imageUrl}} style={{ height: null, width: null, flex: 1 }}>
                         <View style={{ flex: 1, marginStart: 10, marginTop: 20 }}>
                             <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                                 <Icon name='arrow-back' style={{color: 'white', fontSize: 35}} />
                             </TouchableOpacity>
                         </View>
                         <View style={{ flex: 1, justifyContent: 'flex-end', marginStart: 30, marginBottom: 30 }}>
-                            <Text style={{ color: 'white', fontSize: 40, fontWeight: 'bold', paddingBottom: 10 }}>Bootcamp</Text>
-                            <H3 style={{color: 'white'}}>Some text description here</H3>
+                            <Text style={{ color: 'white', fontSize: 40, fontWeight: 'bold', paddingBottom: 10 }}>{this.state.name}</Text>
+                            <H3 style={{color: 'white'}}>{this.state.description}</H3>
                         </View>
                     </ImageBackground>
                 </View>
@@ -62,8 +71,9 @@ class ShowScreen extends Component {
                             <Item style={{ borderColor: '#928150' }} rounded>
                                 <Picker mode='dropdown' style={{ color: '#928150' }} selectedValue={this.state.selectedLocation} onValueChange={this.onLocationChange.bind(this)}>
                                     <Picker.Item label='Location' value='' />
-                                    <Picker.Item label='Brampton' value='Brampton' />
-                                    <Picker.Item label='Mississauga' value='Mississauga' />
+                                    {
+                                        this.state.locations.map(location => <Picker.Item label={location[0]} value={location[1]} />)
+                                    }
                                 </Picker>
                             </Item>
                             {
@@ -72,7 +82,6 @@ class ShowScreen extends Component {
                             (<View>
                                 <Item style={{ borderColor: '#928150', marginTop: 10}} rounded>
                                     <Picker mode='dropdown' style={{ color: '#928150'}} selectedValue={this.state.selectedDate} onValueChange={this.onDateChange.bind(this)}>
-                                        <Picker.Item label='Select Date' value='' />
                                         {datePicker}
                                     </Picker>
                                 </Item>
@@ -103,6 +112,11 @@ class ShowScreen extends Component {
 
     onLocationChange(value) {
         this.setState({ selectedLocation: value });
+        let id = this.props.navigation.state.params.classId;
+        if (value !== '') {
+            showDates(this.state.token, id, value)
+                .then(response => this.setState({ classes: response.data.dates }));
+        }
     }
 
     handleClassSignUp() {

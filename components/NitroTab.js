@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, Linking, TouchableOpacity } from 'react-native';
-import { Content } from 'native-base';
+import { View, StyleSheet, Image, Linking, TouchableOpacity } from 'react-native';
+import { Content, Card, CardItem, Thumbnail, Body, Text, H3 } from 'native-base';
 
 class NitroTab extends Component {
     render() {
         return (
             <Content>
-                <TouchableOpacity onPress={() => Linking.canOpenURL('https://nitrolifestyle.ca/nitro-diet/').then(supported => {
-                    if (supported) {
-                        Linking.openURL('https://nitrolifestyle.ca/nitro-diet/');
-                    } else {
-                        // console.log("Don't know how to open URI: " + this.props.url);
-                    }
-                })}>
-                    <Image source={require('../assets/img/nitro-diet.jpg')} />
+                <TouchableOpacity>
+                    <Card>
+                        <CardItem header bordered>
+                            <Thumbnail source={require('../assets/img/bootcamp-body.jpg')} />
+                            <Body style={{ marginStart: 10, marginTop: 5 }}>
+                                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Name</Text>
+                                <Text note>description</Text>
+                            </Body>
+                        </CardItem>
+                        <CardItem cardBody>
+                            <Image source={require('../assets/img/bootcamp-body.jpg')} style={{ height: 200, width: null, flex: 1 }} />
+                        </CardItem>
+                    </Card>
                 </TouchableOpacity>
             </Content>
         );

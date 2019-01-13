@@ -56,20 +56,23 @@ class HomeTab extends Component {
             elements.push(<NoClass />);
         }
         return (
-            <Content contentContainerStyle={{flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center'}}>
-                {elements}
+            <Content contentContainerStyle={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
+                <View>
+                    {elements}
+                </View>
             </Content>
         );
     }
 
     handleCancel(signUpId) {
+        token = this.state.token
         Alert.alert('Cancel Class', 
         'Are you sure you want to cancel your sign up?',
         [
             { text: 'Cancel', style: 'cancel' },
             {
                 text: 'Yes', onPress: () => {
-                    cancelClass(this.state.token, signUpId)
+                    cancelClass(token, signUpId)
                     .then(response => {
                         alert('Sign up cancelled');
                         this.props.navigation.dispatch(StackActions.reset({

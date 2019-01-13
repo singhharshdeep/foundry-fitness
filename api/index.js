@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const url = 'http://nitrolifestyle.herokuapp.com/api/v1';
-const url = 'http://10.0.2.2:3000/api/v1';
+const url = 'http://localhost:3000/api/v1';
 
 export const getUserToken = (email, password) => {
     return axios.post(url + '/user_token', {
@@ -17,6 +17,26 @@ export const getUserToken = (email, password) => {
     });
 }
 
+export const getGymClass = (token, id) => {
+    return axios.get(url + '/classes/' + id, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    });
+}
+
+export const getLocations = (token) => {
+    return axios.get(url + '/schedules/locations', {
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    });
+}
+
 export const showClasses = (token) => {
     return axios.get(url + '/classes', {
         headers: {
@@ -27,8 +47,8 @@ export const showClasses = (token) => {
     });
 }
 
-export const showClass = (token, id) => {
-    return axios.get(url + '/classes/' + id, {
+export const showDates = (token, id, locationId) => {
+    return axios.get(url + '/classes' + id + '/schedules?location_id=' + locationId, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -53,7 +73,7 @@ export const signUp = (token, start_date, time_range, schedule_id) => {
 export const signedUpClasses = (token) => {
     return axios.get(url + '/users/classes', {
             headers: {
-                Authorization: 'Bearer ' + token
+                'Authorization': 'Bearer ' + token
             }
         });
 }
@@ -61,7 +81,26 @@ export const signedUpClasses = (token) => {
 export const cancelClass = (token, signUpId) => {
     return axios.post(url + '/sign_ups/' + signUpId + '/cancel', {
         headers: {
-            Authorization: 'Bearer ' + token
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+}
+
+export const getProfileInfo = (token) => {
+    return axios.get(url + '/profile', { 
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+}
+
+export const changeUserPassword = (token, oldPassword, newPassword) => {
+    return axios.post(url + '/users/update_password', {
+            old_password: oldPassword,
+            new_password: newPassword,
+        }, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
         }
     });
 }

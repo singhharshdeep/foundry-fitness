@@ -1,25 +1,86 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage, Alert } from 'react-native';
-import { Content, Text, Thumbnail, Button } from 'native-base';
+import { View, AsyncStorage, Alert, TouchableOpacity } from 'react-native';
+import { Content, Text, Thumbnail, Button, Body, List, ListItem } from 'native-base';
+import ImagePicker from 'react-native-image-picker';
+import { getProfileInfo } from '../api';
+
+const options = {
+    title: 'Select Avatar',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+};
 
 class ProfileTab extends Component {
+
+    state = {
+        profilePhotoUri: '',
+        userInfo: null,
+    }
+
+    componentDidMount() {
+        AsyncStorage.getItem('profilePhotoUri')
+        .then(uri => {
+            if (uri !== null) {
+                this.setState({ profilePhotoUri: uri });
+            }
+        });
+
+        AsyncStorage.getItem('userToken')
+        .then(token => {
+            getProfileInfo(token)
+            .then(response => this.setState({userInfo: response.data.data.attributes}));
+        })
+
+    }
+
     render() {
         return (
             <Content contentContainerStyle={{flex: 1}} style={{backgroundColor: 'white'}}>
-                <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
-                    <Thumbnail style={{width: 120, height: 120, borderRadius: 60}} source={require('../assets/img/bootcamp.jpg')} />
-                    <View style={{marginTop: 10}}>
-                        <Text style={{textAlign: 'center'}}>Nitro User</Text>
-                        <Text note>testuser@gmail.com</Text>
-                    </View>
-                </View>
+                <Body style={{flex: 1, justifyContent: 'center', alignSelf: 'center', marginTop: 20}}>
+                    <TouchableOpacity onPress={() => this.handleChangeProfilePicture()}>
+                        <Thumbnail style={{width: 120, height: 120, borderRadius: 60}} source={this.state.profilePhotoUri === '' ? require('../assets/img/bootcamp.jpg') : {uri: this.state.profilePhotoUri}}  />
+                    </TouchableOpacity>
+                    <Body style={{marginTop: 10}}>
+                        <Text note>{this.state.userInfo !== null ? this.state.userInfo.email : ''}</Text>
+                        <Text note>Member Until: {this.state.userInfo !== null ? this.state.userInfo.membership_renewal_date : ''}</Text>
+                    </Body>
+                </Body>
                 <View style={{flex: 2}}>
+                    <List>
+                        <ListItem onPress={() => this.props.navigation.navigate('ChangePassword')}>
+                            <Text>Change Password</Text>
+                        </ListItem>
+                    </List>
                     <Button danger full onPress={() =>  this.handleLogout()}>
                         <Text>Logout</Text>
                     </Button>
                 </View>
             </Content>
         );
+    }
+
+    handleChangeProfilePicture() {
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                AsyncStorage.setItem('profilePhotoUri', source.uri);
+                this.setState({ profilePhotoUri: source.uri });
+            }
+        });
     }
 
     handleLogout() {

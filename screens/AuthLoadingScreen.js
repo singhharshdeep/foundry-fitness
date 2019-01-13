@@ -56,6 +56,7 @@ class AuthLoadingScreen extends Component {
     }
 
     render() {
+        setTimeout(() => console.log('delay'), 5000);
         return (
             <StyleProvider style={getTheme(commonColor)}>
                 <Container style={{backgroundColor: '#1A1A1A'}}>
@@ -66,10 +67,6 @@ class AuthLoadingScreen extends Component {
                 </Container>
             </StyleProvider>
         );
-    }
-
-    delay() {
-
     }
 }
 

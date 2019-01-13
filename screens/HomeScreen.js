@@ -16,18 +16,23 @@ class HomeScreen extends Component {
 
     render() {
         let activeTab;
+        let headerTitle;
         switch(this.state.selectedTab) {
             case 0:
                 activeTab = <HomeTab />
+                headerTitle = 'Upcoming Classes';
                 break;
             case 1:
                 activeTab = <ClassesTab navigation={this.props.navigation} />
+                headerTitle = 'Classes';
                 break;
             case 2:
                 activeTab = <NitroTab />
+                headerTitle = 'Nitro';
                 break;
             case 3:
                 activeTab = <ProfileTab navigation={this.props.navigation} />
+                headerTitle = 'Profile';
                 break;
             default:
                 activeTab = <HomeTab />
@@ -36,8 +41,8 @@ class HomeScreen extends Component {
             <StyleProvider style={getTheme(commonColor)}>
                 <Container style={styles.container}>
                     <StatusBar />
-                    <Header style={{ justifyContent: 'center', alignItems: 'center' }} iosBarStyle='light-content'>
-                        <Title>Home</Title>
+                    <Header style={{ justifyContent: 'center', alignItems: 'center' }} iosBarStyle='dark-content'>
+                        <Title>{headerTitle}</Title>
                     </Header>
                     {activeTab}
                     <Footer>

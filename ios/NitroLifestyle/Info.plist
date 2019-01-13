@@ -70,5 +70,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Nitro Lifestyle would like access to your photo gallery to change your profile picture</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Nitro Lifestyle would like access to your camera to change your profile picture</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Nitro Lifestyle would like to save photos to your photo gallery to change your profile picture</string>
 </dict>
 </plist>
