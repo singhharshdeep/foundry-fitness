@@ -27,7 +27,7 @@ class HomeScreen extends Component {
                 headerTitle = 'Classes';
                 break;
             case 2:
-                activeTab = <NitroTab />
+                activeTab = <NitroTab navigation={this.props.navigation} />
                 headerTitle = 'Nitro';
                 break;
             case 3:

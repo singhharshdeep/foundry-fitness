@@ -3,7 +3,8 @@ import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import ShowScreen from './screens/ShowScreen';
 import AuthLoadingScreen from './screens/AuthLoadingScreen';
-import ChangePasswordScreen from './screens/ChangePasswordScreen';;
+import ChangePasswordScreen from './screens/ChangePasswordScreen';import ShowPageScreen from './screens/ShowPageScreen';
+;
 
 const Auth = createStackNavigator({
   Login: { screen: LoginScreen },
@@ -12,7 +13,8 @@ const Auth = createStackNavigator({
 const App = createStackNavigator({
   Home: { screen: HomeScreen },
   Show: { screen: ShowScreen },
-  ChangePassword: { screen: ChangePasswordScreen }
+  ChangePassword: { screen: ChangePasswordScreen },
+  ShowPage: { screen: ShowPageScreen },
 });
 
 export default createAppContainer(createSwitchNavigator(

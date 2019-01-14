@@ -104,3 +104,19 @@ export const changeUserPassword = (token, oldPassword, newPassword) => {
         }
     });
 }
+
+export const getPages = (token) => {
+    return axios.get(url + '/pages', {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+}
+
+export const getPage = (token, id) => {
+    return axios.get(url + '/pages/' + id, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+}
