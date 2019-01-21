@@ -7,6 +7,7 @@ import ProfileTab from '../components/ProfileTab';
 import NitroTab from '../components/NitroTab';
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
+import MessagesTab from '../components/MessagesTab';
 
 class HomeScreen extends Component {
     state = {
@@ -31,6 +32,10 @@ class HomeScreen extends Component {
                 headerTitle = 'Nitro';
                 break;
             case 3:
+                activeTab = <MessagesTab />
+                headerTitle = 'Messages';
+                break;
+            case 4:
                 activeTab = <ProfileTab navigation={this.props.navigation} />
                 headerTitle = 'Profile';
                 break;
@@ -46,22 +51,26 @@ class HomeScreen extends Component {
                     </Header>
                     {activeTab}
                     <Footer>
-                        <FooterTab>
-                            <Button vertical onPress={() => this.setState({ selectedTab: 0 })} active={this.state.selectedTab === 0}>
+                        <FooterTab >
+                            <Button  vertical onPress={() => this.setState({ selectedTab: 0 })} active={this.state.selectedTab === 0}>
                                 <Icon type='FontAwesome' name='home' />
-                                <Text>Home</Text>
+                                <Text style={{ fontSize: 10 }}>Home</Text>
                             </Button>
-                            <Button vertical onPress={() => this.setState({ selectedTab: 1 })} active={this.state.selectedTab === 1}>
+                            <Button  vertical onPress={() => this.setState({ selectedTab: 1 })} active={this.state.selectedTab === 1}>
                                 <Icon type='FontAwesome' name='calendar' />
-                                <Text>Classes</Text>
+                                <Text style={{ fontSize: 10 }}>Classes</Text>
                             </Button>
-                            <Button vertical onPress={() => this.setState({ selectedTab: 2 })} active={this.state.selectedTab === 2}>
+                            <Button  vertical onPress={() => this.setState({ selectedTab: 2 })} active={this.state.selectedTab === 2}>
                                 <Icon type='FontAwesome' name='info' />
-                                <Text>Nitro</Text>
+                                <Text style={{ fontSize: 10 }}>Nitro</Text>
                             </Button>
                             <Button vertical onPress={() => this.setState({ selectedTab: 3 })} active={this.state.selectedTab === 3}>
+                                <Icon type='FontAwesome' name='envelope' />
+                                <Text numberOfLines={1} style={{ fontSize: 10 }}>Feed</Text>
+                            </Button>
+                            <Button  vertical onPress={() => this.setState({ selectedTab: 4 })} active={this.state.selectedTab === 4}>
                                 <Icon type='FontAwesome' name='user' />
-                                <Text>Profile</Text>
+                                <Text style={{ fontSize: 10 }}>Profile</Text>
                             </Button>
                         </FooterTab>
                     </Footer>

@@ -26,9 +26,8 @@ class ShowScreen extends Component {
             this.setState({ token : token })
             let id = this.props.navigation.state.params.classId;
             getGymClass(token, id)
-                .then(response => { 
-                    console.log(response);
-                    this.setState({ name: response.data.data.attributes.name, description: response.data.data.attributes.description, imageUrl: response.data.data.attributes.image_url })
+                .then(response => {
+                    // this.setState({ name: response.data.data.attributes.name, description: response.data.data.attributes.description, imageUrl: response.data.data.attributes.image_url })
             })
             getLocations(token)
                 .then(response => { this.setState({ locations: response.data })});

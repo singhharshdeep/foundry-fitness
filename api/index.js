@@ -8,6 +8,7 @@ export const getUserToken = (email, password) => {
         auth: {
             email: email,
             password: password
+            
         }
     }, {
         headers: {
@@ -115,6 +116,14 @@ export const getPages = (token) => {
 
 export const getPage = (token, id) => {
     return axios.get(url + '/pages/' + id, {
+        headers: {
+            'Authorization': 'Bearer ' + token,
+        }
+    });
+}
+
+export const getMessages = (token) => {
+    return axios.get(url + '/messages', {
         headers: {
             'Authorization': 'Bearer ' + token,
         }

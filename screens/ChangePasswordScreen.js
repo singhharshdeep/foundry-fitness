@@ -27,7 +27,7 @@ class ChangePasswordScreen extends Component {
                         <InputGroup>
                             <Input secureTextEntry onChangeText={confirmPassword => this.setState({ confirmPassword })} placeholder='Confirm New Password' />
                         </InputGroup>
-                        <Button onPress={() => this.handlChangePassword()} style={{marginTop: 20}} full primary>
+                <Button onPress={() => this.handlChangePassword()} style={{ marginTop: 20, backgroundColor: '#928150'}} full>
                             <Text>Change Password</Text>
                         </Button>
             </Content>
