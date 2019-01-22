@@ -49,7 +49,7 @@ export const showClasses = (token) => {
 }
 
 export const showDates = (token, id, locationId) => {
-    return axios.get(url + '/classes' + id + '/schedules?location_id=' + locationId, {
+    return axios.get(url + '/classes/' + id + '/schedules?location_id=' + locationId, {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

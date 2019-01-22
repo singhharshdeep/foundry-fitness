@@ -33,7 +33,7 @@ class HomeScreen extends Component {
                 break;
             case 3:
                 activeTab = <MessagesTab />
-                headerTitle = 'Messages';
+                headerTitle = 'Feeds';
                 break;
             case 4:
                 activeTab = <ProfileTab navigation={this.props.navigation} />

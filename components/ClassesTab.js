@@ -27,9 +27,8 @@ class ClassesTab extends Component {
                             <Card>
                                 <CardItem header bordered>
                                     <Thumbnail source={{ uri: gymClass.attributes.image_url }} />
-                                    <Body style={{ marginStart: 10, marginTop: 5 }}>
-                                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{gymClass.attributes.name}</Text>
-                                        <Text note>{gymClass.attributes.description}</Text>
+                                    <Body style={{ marginStart: 10, marginTop: 5, justifyContent: 'center' }}>
+                                        <Text style={{ fontSize: 17, fontWeight: 'bold' }}>{gymClass.attributes.name}</Text>
                                     </Body>
                                 </CardItem>
                                 <CardItem cardBody>
@@ -38,7 +37,7 @@ class ClassesTab extends Component {
                                 <CardItem cardBody>
                                     <View style={{ flex: 1, width: undefined, margin: 0 }}>
                                         <View full style={{ backgroundColor: '#928150', height: 60, justifyContent: 'center', alignItems: 'center' }}>
-                                            <H3 style={{ color: '#fff' }}>SIGN UP</H3>
+                                            <Text style={{ color: '#fff', margin: 0 }}>SIGN UP</Text>
                                         </View>
                                     </View>
                                 </CardItem>

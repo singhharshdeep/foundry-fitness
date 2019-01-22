@@ -27,7 +27,8 @@ class ShowScreen extends Component {
             let id = this.props.navigation.state.params.classId;
             getGymClass(token, id)
                 .then(response => {
-                    // this.setState({ name: response.data.data.attributes.name, description: response.data.data.attributes.description, imageUrl: response.data.data.attributes.image_url })
+                    // alert(Object.keys(response))
+                    this.setState({ name: response.data.data.attributes.name, description: response.data.data.attributes.description, imageUrl: response.data.data.attributes.image_url })
             })
             getLocations(token)
                 .then(response => { this.setState({ locations: response.data })});
@@ -80,12 +81,12 @@ class ShowScreen extends Component {
                             this.state.selectedLocation !== '' &&
                             (<View>
                                 <Item style={{ borderColor: '#928150', marginTop: 10}} rounded>
-                                    <Picker mode='dropdown' style={{ color: '#928150'}} selectedValue={this.state.selectedDate} onValueChange={this.onDateChange.bind(this)}>
+                                    <Picker mode='dropdown' style={{ color: '#928150'}} selectedValue={this.state.selectedDate} placeholder='Select Date' onValueChange={this.onDateChange.bind(this)}>
                                         {datePicker}
                                     </Picker>
                                 </Item>
                                 <Item style={{ borderColor: '#928150', marginTop: 10 }} rounded>
-                                    <Picker mode='dropdown' style={{ color: '#928150' }} selectedValue={this.state.selectedTime} onValueChange={this.onTimeChange.bind(this)}>
+                                    <Picker mode='dropdown' style={{ color: '#928150' }} selectedValue={this.state.selectedTime} placeholder='Select Time' onValueChange={this.onTimeChange.bind(this)}>
                                         {this.state.selectedDate !== '' ? timePicker : <Picker.Item label='Select Time' value='' />}
                                     </Picker>
                                 </Item>
@@ -114,7 +115,9 @@ class ShowScreen extends Component {
         let id = this.props.navigation.state.params.classId;
         if (value !== '') {
             showDates(this.state.token, id, value)
-                .then(response => this.setState({ classes: response.data.dates }));
+                .then(response => {
+                    this.setState({ classes: response.data.dates })
+                });
         }
     }
 

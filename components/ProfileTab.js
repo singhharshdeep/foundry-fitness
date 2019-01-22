@@ -44,16 +44,16 @@ class ProfileTab extends Component {
                     </TouchableOpacity>
                     <Body style={{marginTop: 10}}>
                         <Text note>{this.state.userInfo !== null ? this.state.userInfo.email : ''}</Text>
-                        <Text note>Member Until: {this.state.userInfo !== null ? this.state.userInfo.membership_renewal_date : ''}</Text>
+                        <Text style={{ fontSize: 22, marginTop: 10 }}>Member Until: {this.state.userInfo !== null ? this.state.userInfo.membership_renewal_date : ''}</Text>
                     </Body>
                 </Body>
                 <View style={{flex: 2}}>
-                    <List>
+                    <List style={{ backgroundColor: '#f1f1f1' }}>
                         <ListItem onPress={() => this.props.navigation.navigate('ChangePassword')}>
-                            <Text>Change Password</Text>
+                            <Text style={{ marginTop: 10, marginBottom: 10 }}>Change Password</Text>
                         </ListItem>
                     </List>
-                    <Button danger full onPress={() =>  this.handleLogout()}>
+                    <Button style={{ position: 'absolute', bottom: 0, width: '100%' }} danger full onPress={() =>  this.handleLogout()}>
                         <Text>Logout</Text>
                     </Button>
                 </View>

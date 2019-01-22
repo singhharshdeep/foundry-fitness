@@ -33,8 +33,8 @@ class LinkPreviewComponent extends Component {
                             </View>
                             <CardItem style={{ backgroundColor: '#edefef', flexDirection: 'column'}}>
                                 <Body>
-                                    <Text note>{this.props.link}</Text>
                                     <Text>{this.state.imageDesciption}</Text>
+                                    <Text note>{this.props.link}</Text>
                                 </Body>
                             </CardItem>
                         </View>

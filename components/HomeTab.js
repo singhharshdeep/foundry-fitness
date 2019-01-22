@@ -25,11 +25,11 @@ class HomeTab extends Component {
         if (this.state.classes.length > 0) {
             this.state.classes.forEach(obj => {
                 date = Object.keys(obj)[0];
-                elements.push(<Text style={{ color: '#5F7787', fontSize: 16, fontWeight: 'bold',paddingTop: 10, paddingStart: 10 }}>{date}</Text>);
-                elements.push(<Separator style={{ height: 1, marginTop: 10 }} />);
+                elements.push(<Text style={{ backgroundColor: '#000000', color: '#FFF', paddingBottom: 10, fontSize: 16, fontWeight: 'bold',paddingTop: 10, paddingStart: 10 }}>{date}</Text>);
                 obj[date].map((gymClass, index) => {
                     elements.push(<View>
                     <SwipeRow
+                        style={{backgroundColor: '#f1f1f1'}}
                         key={index}
                         leftOpenValue={75}
                         left={
@@ -39,13 +39,12 @@ class HomeTab extends Component {
                         }
                         body={
                             <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <Thumbnail square style={{ paddingStart: 10 }} source={require('../assets/img/bootcamp-body.jpg')} />
-                                <View style={{ flex: 1, marginStart: 10 }}>
-                                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#928150' }}>{gymClass.gym_class.name}</Text>
-                                    <Text note style={{ color: '#B6B6B6' }}>{gymClass.gym_class.description}</Text>
+                                <Thumbnail style={{ paddingStart: 10, marginLeft: 5 }} source={{ uri: gymClass.gym_class.image_url }} />
+                                <View style={{ flex: 1, marginStart: 10, justifyContent: 'center' }}>
+                                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#000' }}>{gymClass.gym_class.name}</Text>
                                 </View>
                                 <Right>
-                                    <Text style={{ fontWeight: 'bold', color: '#928150' }}>{gymClass.start_time}</Text>
+                                    <Text style={{ fontWeight: 'bold', color: '#928150', fontSize: 20, textAlign: 'center' }}>{gymClass.start_time}</Text>
                                 </Right>
                             </View>
                         }
@@ -56,7 +55,7 @@ class HomeTab extends Component {
             elements.push(<NoClass />);
         }
         return (
-            <Content contentContainerStyle={{flex: 1, backgroundColor: 'white', alignItems: 'center'}}>
+            <Content contentContainerStyle={{flex: 1, backgroundColor: 'white'}}>
                 <View>
                     {elements}
                 </View>
