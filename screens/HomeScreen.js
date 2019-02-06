@@ -20,7 +20,7 @@ class HomeScreen extends Component {
         let headerTitle;
         switch(this.state.selectedTab) {
             case 0:
-                activeTab = <HomeTab />
+                activeTab = <HomeTab onSignupButtonPress={() => this.setState({ selectedTab: 1 })} />
                 headerTitle = 'Upcoming Classes';
                 break;
             case 1:
@@ -46,7 +46,7 @@ class HomeScreen extends Component {
             <StyleProvider style={getTheme(commonColor)}>
                 <Container style={styles.container}>
                     <StatusBar />
-                    <Header style={{ justifyContent: 'center', alignItems: 'center' }} iosBarStyle='dark-content'>
+                    <Header style={{ justifyContent: 'center', alignItems: 'center' }} iosBarStyle='light-content'>
                         <Title>{headerTitle}</Title>
                     </Header>
                     {activeTab}

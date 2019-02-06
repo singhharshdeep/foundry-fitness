@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, AsyncStorage, Alert, TouchableOpacity } from 'react-native';
 import { Content, Text, Thumbnail, Button, Body, List, ListItem } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { getProfileInfo } from '../api';
 
 const options = {
@@ -30,8 +31,20 @@ class ProfileTab extends Component {
         AsyncStorage.getItem('userToken')
         .then(token => {
             getProfileInfo(token)
-            .then(response => this.setState({userInfo: response.data.data.attributes}));
-        })
+            .then(response => {
+                if (response.status === 200) {
+                    this.setState({ userInfo: response.data.data.attributes });
+                } else if (response.status == 401) {
+                    AsyncStorage.removeItem('userToken')
+                    this.props.navigation.dispatch(StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                    }));
+                } else {
+                    alert('An error occured');
+                }
+            }
+        });
 
     }
 

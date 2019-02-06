@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, AsyncStorage } from 'react-native';
-import { Content, Card, CardItem, Thumbnail, Body, Text, H3, Spinner } from 'native-base';
+import { Content, Card, CardItem, Thumbnail, Body, Text, Spinner } from 'native-base';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { showClasses } from '../api';
 
 class ClassesTab extends Component {
@@ -13,7 +14,20 @@ class ClassesTab extends Component {
         this.setState({ loading: true });
         AsyncStorage.getItem('userToken').then(token => {
             showClasses(token)
-                .then(response => this.setState({ classes: response.data.data, loading: false }))
+                    .then(response => {
+                            if (response.status === 200) {
+                                this.setState({ classes: response.data.data, loading: false })
+                            } else if (response.status === 401) {
+                                AsyncStorage.removeItem('userToken')
+                                this.props.navigation.dispatch(StackActions.reset({
+                                    index: 0,
+                                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                                }));
+                            } else {
+                                alert('An error occured');
+                            }
+                        }    
+                    )
         });
     }
 

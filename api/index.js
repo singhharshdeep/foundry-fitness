@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const url = 'http://nitrolifestyle.herokuapp.com/api/v1';
-const url = 'http://localhost:3000/api/v1';
+const url = 'http://nitrolifestyle.herokuapp.com/api/v1';
+// const url = 'http://10.0.2.2:3000/api/v1';
 
 export const getUserToken = (email, password) => {
     return axios.post(url + '/user_token', {
@@ -79,8 +79,10 @@ export const signedUpClasses = (token) => {
         });
 }
 
-export const cancelClass = (token, signUpId) => {
+export const cancelClass = (token, signUpId, isFined) => {
     return axios.post(url + '/sign_ups/' + signUpId + '/cancel', {
+            charged: isFined
+        }, {
         headers: {
             'Authorization': 'Bearer ' + token,
         }

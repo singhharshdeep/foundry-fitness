@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, Alert } from 'react-native';
-import { Content, Separator, SwipeRow, Button, Thumbnail, Icon, Right } from 'native-base';
+import { View, Text, AsyncStorage, Alert } from 'react-native';
+import { Content, SwipeRow, Button, Thumbnail, Icon, Right } from 'native-base';
 import { signedUpClasses, cancelClass } from '../api';
 import { StackActions, NavigationActions } from 'react-navigation';
 import NoClass from './NoClass';
@@ -15,7 +15,17 @@ class HomeTab extends Component {
         AsyncStorage.getItem('userToken').then(token => {
             this.setState({token: token});
             signedUpClasses(token).then(response => {
-                this.setState({ classes: response.data })
+                if (response.status === 200) {
+                    this.setState({ classes: response.data })
+                } else if (response.status === 401) {
+                    AsyncStorage.removeItem('userToken')
+                    this.props.navigation.dispatch(StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                    }));
+                } else {
+                    alert('An error occured');
+                }
             })
         });
     }
@@ -33,7 +43,7 @@ class HomeTab extends Component {
                         key={index}
                         leftOpenValue={75}
                         left={
-                            <Button danger onPress={() => this.handleCancel(gymClass.id)}>
+                            <Button danger onPress={() => this.handleCancel(gymClass.id, date, gymClass.start_time)}>
                                 <Icon active name="trash" />
                             </Button>
                         }
@@ -52,26 +62,29 @@ class HomeTab extends Component {
                 })
             });
         } else {
-            elements.push(<NoClass />);
+            elements.push(<NoClass onSignupButtonPress={this.props.onSignupButtonPress} />);
         }
         return (
             <Content contentContainerStyle={{flex: 1, backgroundColor: 'white'}}>
-                <View>
-                    {elements}
-                </View>
+                {elements}
             </Content>
         );
     }
 
-    handleCancel(signUpId) {
-        token = this.state.token
+    handleCancel(signUpId, date, startTime) {
+        let classTime = new Date(date.substring(date.indexOf(',') + 2) + ' ' + startTime);
+        let currentTime = new Date();
+        let difference = Math.floor(Math.abs(classTime - currentTime) / 36e5);
+        token = this.state.token;
+        let displayMessage = 'Are you sure you want to cancel your sign up?';
+        displayMessage += (difference <= 8 ? ' You will be fined $5' : '');
         Alert.alert('Cancel Class', 
-        'Are you sure you want to cancel your sign up?',
+        displayMessage,
         [
             { text: 'Cancel', style: 'cancel' },
             {
                 text: 'Yes', onPress: () => {
-                    cancelClass(token, signUpId)
+                    cancelClass(token, signUpId, difference <= 8)
                     .then(response => {
                         alert('Sign up cancelled');
                         this.props.navigation.dispatch(StackActions.reset({

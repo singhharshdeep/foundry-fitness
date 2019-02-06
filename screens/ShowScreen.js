@@ -53,7 +53,7 @@ class ShowScreen extends Component {
             <View style={{ flex: 1 }}>
                 <StatusBar barStyle='light-content' />
                 <View style={{ flex: 1 }}>
-                    <ImageBackground resizeMode='stretch' style={{opacity: 0.8}} source={{uri: this.state.imageUrl}} style={{ height: null, width: null, flex: 1 }}>
+                    <ImageBackground resizeMode='cover' style={{opacity: 0.8}} source={{uri: this.state.imageUrl}} style={{ height: null, width: null, flex: 1 }}>
                         <View style={{ flex: 1, marginStart: 10, marginTop: 20 }}>
                             <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                                 <Icon name='arrow-back' style={{color: 'white', fontSize: 35}} />

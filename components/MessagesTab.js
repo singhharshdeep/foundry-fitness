@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, AsyncStorage, Linking } from 'react-native';
 import { Text, Content, Card, CardItem, Body, Icon, Spinner, Image } from 'native-base';
 import { getMessages } from '../api';
+import { StackActions, NavigationActions } from 'react-navigation';
 import LinkPreviewComponent from './LinkPreviewComponent';
 
 
@@ -17,7 +18,17 @@ class MessagesTab extends Component {
         AsyncStorage.getItem('userToken')
         .then(token => getMessages(token)
                         .then(response => {
-                            this.setState({messages: response.data.data, loading: false})
+                            if (response.status === 200) {
+                                this.setState({ messages: response.data.data, loading: false })
+                            } else if (response.status === 401) {
+                                AsyncStorage.removeItem('userToken')
+                                this.props.navigation.dispatch(StackActions.reset({
+                                    index: 0,
+                                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                                }));
+                            } else {
+                                alert('An error occured');
+                            }
                     })
         );
     }

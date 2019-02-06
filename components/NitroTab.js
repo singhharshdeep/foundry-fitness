@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, TouchableOpacity, AsyncStorage } from 'react-native';
-import { Content, Card, CardItem, Thumbnail, Body, Text, H3, Spinner } from 'native-base';
+import { Content, Card, CardItem, Thumbnail, Body, Text, Spinner } from 'native-base';
+import { StackActions, NavigationActions } from 'react-navigation';
+
 import { getPages } from '../api';
 
 class NitroTab extends Component {
@@ -14,7 +16,19 @@ class NitroTab extends Component {
         this.setState({ loading: true });
         AsyncStorage.getItem('userToken')
         .then(token => getPages(token)
-                        .then(response => this.setState({ pages: response.data.data, loading: false }))
+                        .then(response => {
+                            if (response.status === 200) {
+                                this.setState({ pages: response.data.data, loading: false });
+                            } else if (response.status === 401) {
+                                AsyncStorage.removeItem('userToken');
+                                this.props.navigation.dispatch(StackActions.reset({
+                                    index: 0,
+                                    actions: [NavigationActions.navigate({ routeName: 'Login' })],
+                                }));
+                            } else {
+                                alert('An error occured');
+                            }
+                        } 
         );
     }
 
