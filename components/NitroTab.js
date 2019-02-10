@@ -29,7 +29,7 @@ class NitroTab extends Component {
                                 alert('An error occured');
                             }
                         } 
-        );
+        ));
     }
 
     render() {

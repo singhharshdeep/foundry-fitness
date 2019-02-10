@@ -44,9 +44,10 @@ class ProfileTab extends Component {
                     alert('An error occured');
                 }
             }
-        });
+        );
 
-    }
+        }
+    )}
 
     render() {
         return (
